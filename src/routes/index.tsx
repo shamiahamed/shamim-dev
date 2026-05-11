@@ -104,8 +104,7 @@ function Navbar() {
           className="font-display text-xl font-bold tracking-tight"
           aria-label="Home"
         >
-          <span className="text-primary">{"<"}</span>SA
-          <span className="text-primary">{"/>"}</span>
+          Shamim<span className="text-primary">.</span>
         </button>
         <nav className="hidden md:flex items-center gap-7">
           {NAV.map((n) => (
