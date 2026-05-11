@@ -3,20 +3,23 @@ import { motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
   Github,
+  Linkedin,
   Mail,
+  Phone,
   Download,
   ExternalLink,
   Briefcase,
   GraduationCap,
-  Trophy,
   Award,
   Code2,
   Database,
-  Wrench,
+  Brain,
   Layout,
   Server,
+  Wrench,
   MapPin,
   Calendar,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,19 +29,19 @@ export const Route = createFileRoute("/")({
   component: Portfolio,
 });
 
-const RESUME_URL =
-  "https://drive.google.com/file/d/1smGgiBOS3Yni7HSagxwsyf4mG5vDY_cQ/view?usp=sharing";
+const RESUME_URL = "#";
 const GITHUB_URL = "https://github.com/shamiahamed";
+const LINKEDIN_URL = "https://linkedin.com/in/shamim-ahamed-j-4766b91b5";
 const EMAIL = "ahamedshamin5@gmail.com";
+const PHONE = "+91 98945 93190";
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const stagger: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.09 } },
 };
 
 function Reveal({
@@ -66,9 +69,9 @@ function Reveal({
 
 const NAV = [
   { label: "About", id: "about" },
-  { label: "Skills", id: "skills" },
-  { label: "Experience", id: "experience" },
   { label: "Projects", id: "projects" },
+  { label: "Experience", id: "experience" },
+  { label: "Skills", id: "skills" },
   { label: "Education", id: "education" },
   { label: "Contact", id: "contact" },
 ];
@@ -89,19 +92,22 @@ function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/80 transition-all ${
-        scrolled ? "border-b border-border shadow-sm" : "border-b border-transparent"
+      className={`fixed top-0 inset-x-0 z-50 transition-all ${
+        scrolled
+          ? "backdrop-blur-xl bg-background/70 border-b border-border"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <button
-          onClick={() => scrollTo("hero")}
-          className="text-2xl font-extrabold text-primary tracking-tight"
+          onClick={() => scrollTo("home")}
+          className="font-display text-xl font-bold tracking-tight"
           aria-label="Home"
         >
-          SA
+          <span className="text-primary">{"<"}</span>SA
+          <span className="text-primary">{"/>"}</span>
         </button>
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {NAV.map((n) => (
             <button
               key={n.id}
@@ -113,7 +119,10 @@ function Navbar() {
           ))}
         </nav>
         <a href={RESUME_URL} target="_blank" rel="noopener noreferrer">
-          <Button size="sm" className="rounded-full font-semibold">
+          <Button
+            size="sm"
+            className="rounded-full font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+          >
             <Download className="size-4" /> Resume
           </Button>
         </a>
@@ -122,21 +131,95 @@ function Navbar() {
   );
 }
 
+const ROLES = [
+  "Python Developer",
+  "FastAPI Backend Engineer",
+  "AI / LangGraph Developer",
+  "Clinical AI Systems Builder",
+];
+
+function Typewriter() {
+  const [idx, setIdx] = useState(0);
+  const [sub, setSub] = useState("");
+  const [del, setDel] = useState(false);
+
+  useEffect(() => {
+    const current = ROLES[idx];
+    const speed = del ? 40 : 75;
+    const t = setTimeout(() => {
+      if (!del) {
+        const next = current.slice(0, sub.length + 1);
+        setSub(next);
+        if (next === current) {
+          setTimeout(() => setDel(true), 1400);
+        }
+      } else {
+        const next = current.slice(0, sub.length - 1);
+        setSub(next);
+        if (next === "") {
+          setDel(false);
+          setIdx((i) => (i + 1) % ROLES.length);
+        }
+      }
+    }, speed);
+    return () => clearTimeout(t);
+  }, [sub, del, idx]);
+
+  return (
+    <span className="text-primary">
+      {sub}
+      <span className="inline-block w-[3px] h-[0.9em] -mb-1 ml-1 bg-primary animate-blink" />
+    </span>
+  );
+}
+
+function Particles() {
+  const dots = Array.from({ length: 28 });
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute top-1/4 -left-32 w-[600px] h-[600px] rounded-full bg-primary/20 blur-3xl animate-blob" />
+      <div
+        className="absolute bottom-0 -right-32 w-[600px] h-[600px] rounded-full bg-accent-cyan/15 blur-3xl animate-blob"
+        style={{ animationDelay: "6s" }}
+      />
+      {dots.map((_, i) => {
+        const left = (i * 37) % 100;
+        const top = (i * 53) % 100;
+        const size = (i % 3) + 2;
+        const delay = (i % 8) * 0.7;
+        return (
+          <span
+            key={i}
+            className="absolute rounded-full bg-primary/40 animate-float"
+            style={{
+              left: `${left}%`,
+              top: `${top}%`,
+              width: `${size}px`,
+              height: `${size}px`,
+              animationDelay: `${delay}s`,
+            }}
+          />
+        );
+      })}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section
-      id="hero"
+      id="home"
       className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden"
     >
-      {/* Animated gradient blobs */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] rounded-full bg-primary/20 blur-3xl animate-blob" />
-        <div
-          className="absolute bottom-0 -right-20 w-[500px] h-[500px] rounded-full bg-primary/10 blur-3xl animate-blob"
-          style={{ animationDelay: "4s" }}
-        />
-      </div>
-
+      <Particles />
       <motion.div
         variants={stagger}
         initial="hidden"
@@ -144,64 +227,71 @@ function Hero() {
         className="max-w-4xl text-center"
       >
         <motion.div variants={fadeUp}>
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-soft text-primary text-sm font-medium border border-primary/15">
-            👋 Available for opportunities
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-soft text-primary text-xs font-medium border border-primary/30">
+            <span className="size-2 rounded-full bg-primary animate-pulse" />
+            Available for Python / AI Engineer roles
           </span>
         </motion.div>
 
         <motion.h1
           variants={fadeUp}
-          className="mt-6 text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.05]"
+          className="mt-7 font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.02] text-gradient"
         >
-          Hi, I'm Shamim Ahamed J
+          SHAMIM AHAMED J
         </motion.h1>
 
         <motion.h2
           variants={fadeUp}
-          className="mt-5 text-2xl sm:text-3xl font-semibold text-primary"
+          className="mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold min-h-[1.4em]"
         >
-          Node.js & React Developer
+          <Typewriter />
         </motion.h2>
 
         <motion.p
           variants={fadeUp}
-          className="mt-5 text-lg text-muted-foreground max-w-2xl mx-auto"
+          className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
         >
-          Building scalable backend systems and intuitive frontend interfaces.
+          Building intelligent backend systems with Python, FastAPI, and LangGraph.
         </motion.p>
 
         <motion.div
           variants={fadeUp}
-          className="mt-9 flex flex-wrap items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
         >
           <Button
             size="lg"
             onClick={() => scrollTo("projects")}
-            className="rounded-full font-semibold shadow-lg shadow-primary/25"
+            className="rounded-full font-semibold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_40px_-8px] shadow-primary/60"
           >
-            View My Work
+            View Projects <ArrowRight className="size-4" />
           </Button>
           <a href={RESUME_URL} target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full font-semibold border-primary/30 text-primary hover:bg-primary-soft"
+              className="rounded-full font-semibold border-border bg-transparent hover:bg-primary-soft hover:text-foreground hover:border-primary/40"
             >
               <Download className="size-4" /> Download Resume
             </Button>
           </a>
         </motion.div>
 
-        <motion.div variants={fadeUp} className="mt-8 flex items-center justify-center gap-4">
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="size-11 rounded-full border border-border bg-background flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 hover:-translate-y-0.5 transition-all"
-          >
-            <Github className="size-5" />
-          </a>
+        <motion.div variants={fadeUp} className="mt-10 flex items-center justify-center gap-3">
+          {[
+            { href: GITHUB_URL, icon: Github, label: "GitHub" },
+            { href: LINKEDIN_URL, icon: Linkedin, label: "LinkedIn" },
+          ].map(({ href, icon: Icon, label }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="size-11 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-primary hover:-translate-y-0.5 transition-all"
+            >
+              <Icon className="size-5" />
+            </a>
+          ))}
         </motion.div>
       </motion.div>
     </section>
@@ -212,61 +302,133 @@ function SectionHeading({ eyebrow, title }: { eyebrow?: string; title: string })
   return (
     <Reveal className="mb-14 text-center">
       {eyebrow && (
-        <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">
+        <p className="text-xs font-semibold text-primary uppercase tracking-[0.25em] mb-3">
           {eyebrow}
         </p>
       )}
-      <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight">{title}</h2>
-      <div className="mx-auto mt-4 h-1 w-16 rounded-full bg-primary" />
+      <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tighter">
+        {title}
+      </h2>
+      <div className="mx-auto mt-4 h-[3px] w-16 rounded-full bg-gradient-to-r from-primary to-accent-cyan" />
     </Reveal>
   );
 }
 
 function About() {
-  const stats = [
-    { icon: "📦", value: "2+", label: "Projects Built" },
-    { icon: "🎓", value: "8.15", label: "CGPA" },
-    { icon: "📜", value: "1", label: "Certification" },
-  ];
+  const highlights = ["Python", "FastAPI", "LangGraph", "PostgreSQL", "React.js", "Docker"];
   return (
-    <section id="about" className="py-24 px-6 bg-section">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading title="About Me" />
-        <div className="grid md:grid-cols-5 gap-12 items-center">
-          <Reveal className="md:col-span-2 flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full" />
-              <div className="relative size-56 sm:size-64 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white text-7xl font-extrabold shadow-2xl shadow-primary/30">
-                SA
-              </div>
-            </div>
-          </Reveal>
-          <Reveal className="md:col-span-3" delay={0.1}>
+    <section id="about" className="py-28 px-6">
+      <div className="max-w-5xl mx-auto">
+        <SectionHeading eyebrow="Who I am" title="About Me" />
+        <Reveal>
+          <Card className="glass p-8 sm:p-12 rounded-2xl shadow-2xl shadow-primary/5">
             <p className="text-lg leading-relaxed text-muted-foreground">
-              I'm a B.E. Electronics & Communication Engineering graduate from PSNA College of
-              Engineering and Technology, with a strong passion for backend development using
-              Node.js and NestJS. I've worked hands-on as a UI Developer Intern, building React
-              components, integrating REST APIs, and working with Node.js-based services. I'm
-              actively looking for a{" "}
-              <span className="text-foreground font-semibold">Node.js or Full Stack Developer</span>{" "}
-              role where I can contribute to building scalable, reliable systems.
+              I'm a B.E. ECE graduate who transitioned into software engineering through
+              self-learning and hands-on building. Currently interning at{" "}
+              <span className="text-foreground font-semibold">
+                Tensaw Technologies, Kochi
+              </span>
+              , where I build real-world clinical AI systems using LangGraph, FastAPI, and LLM
+              integration. I'm passionate about backend architecture, AI workflow
+              orchestration, and building systems that solve real problems.
             </p>
-          </Reveal>
-        </div>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {highlights.map((h) => (
+                <Badge
+                  key={h}
+                  className="bg-primary-soft text-primary border border-primary/30 hover:bg-primary-soft rounded-full px-4 py-1.5 text-sm font-medium"
+                >
+                  {h}
+                </Badge>
+              ))}
+            </div>
+          </Card>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
+function Projects() {
+  const projects = [
+    {
+      title: "ClinicCore",
+      subtitle: "Clinic Management System",
+      stack: ["FastAPI", "Async SQLAlchemy", "PostgreSQL", "JWT", "RBAC", "Pydantic"],
+      desc: "A production-ready REST API for managing clinics, doctors, patients, and appointments. Features JWT auth, Role-Based Access Control, and a clean layered architecture built for real healthcare workflows.",
+    },
+    {
+      title: "DocMind",
+      subtitle: "LLM Document Intelligence Agent",
+      stack: ["LangGraph", "LangChain", "OpenAI GPT-4o", "ChromaDB", "FastAPI", "RAG"],
+      desc: "A multi-agent AI workflow using LangGraph that ingests documents, performs semantic retrieval via RAG, and generates context-aware answers. Built with stateful memory and a streaming FastAPI endpoint.",
+    },
+    {
+      title: "EduTrack",
+      subtitle: "Student Record Management",
+      stack: ["React.js", "MySQL", "Python", "REST API", "CRUD"],
+      desc: "A full-stack CRUD system for managing student records with a React frontend connected to a RESTful backend, with statistical summaries and performance insights.",
+    },
+  ];
+
+  return (
+    <section id="projects" className="py-28 px-6 bg-section/40">
+      <div className="max-w-6xl mx-auto">
+        <SectionHeading eyebrow="What I've built" title="Projects" />
         <motion.div
           variants={stagger}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid sm:grid-cols-3 gap-5 mt-14"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {stats.map((s) => (
-            <motion.div key={s.label} variants={fadeUp}>
-              <Card className="p-7 text-center border-border/60 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all">
-                <div className="text-3xl mb-2">{s.icon}</div>
-                <div className="text-4xl font-extrabold text-primary">{s.value}</div>
-                <div className="text-sm text-muted-foreground mt-1 font-medium">{s.label}</div>
+          {projects.map((p) => (
+            <motion.div key={p.title} variants={fadeUp}>
+              <Card className="glass rounded-2xl p-7 h-full flex flex-col hover:-translate-y-1 transition-all group">
+                <div>
+                  <h3 className="font-display text-2xl font-bold tracking-tight">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm text-primary font-medium mt-1">{p.subtitle}</p>
+                </div>
+                <div className="flex flex-wrap gap-1.5 my-5">
+                  {p.stack.map((s) => (
+                    <Badge
+                      key={s}
+                      variant="secondary"
+                      className="bg-white/5 text-muted-foreground border border-white/10 rounded-md text-[11px] font-medium"
+                    >
+                      {s}
+                    </Badge>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                  {p.desc}
+                </p>
+                <div className="mt-6 flex gap-2">
+                  <a
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1"
+                  >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full rounded-full border-border bg-transparent hover:bg-primary-soft hover:border-primary/40"
+                    >
+                      <Github className="size-4" /> GitHub
+                    </Button>
+                  </a>
+                  <a href="#" className="flex-1">
+                    <Button
+                      size="sm"
+                      className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      Live Demo <ExternalLink className="size-3.5" />
+                    </Button>
+                  </a>
+                </div>
               </Card>
             </motion.div>
           ))}
@@ -276,119 +438,54 @@ function About() {
   );
 }
 
-function Skills() {
-  const groups = [
-    { icon: Server, title: "Backend", items: ["Node.js", "REST API Development", "NestJS"] },
-    { icon: Layout, title: "Frontend", items: ["ReactJS", "HTML5", "CSS3", "Bootstrap"] },
-    { icon: Database, title: "Databases", items: ["MongoDB", "MySQL", "SQL"] },
-    { icon: Code2, title: "Languages", items: ["JavaScript", "Java", "Python"] },
-    { icon: Wrench, title: "Tools & Others", items: ["React Hooks", "Git", "GitHub"] },
-  ];
-  return (
-    <section id="skills" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading title="Technical Skills" />
-        <motion.div
-          variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
-        >
-          {groups.map((g) => {
-            const Icon = g.icon;
-            return (
-              <motion.div key={g.title} variants={fadeUp}>
-                <Card className="p-6 h-full border-border/60 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="size-10 rounded-lg bg-primary-soft text-primary flex items-center justify-center">
-                      <Icon className="size-5" />
-                    </div>
-                    <h3 className="font-semibold text-lg">{g.title}</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {g.items.map((it) => (
-                      <Badge
-                        key={it}
-                        variant="secondary"
-                        className="bg-primary-soft text-primary hover:bg-primary-soft border-0 rounded-full px-3 py-1 font-medium"
-                      >
-                        {it}
-                      </Badge>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
 function Experience() {
   const jobs = [
     {
-      role: "UI Developer Intern",
-      company: "CKR Consulting Engineers Pvt Ltd",
-      location: "Angamaly, Kerala",
-      period: "Sept 2024 – Mar 2025",
+      role: "Software Engineer Intern",
+      company: "Tensaw Technologies India Private Limited",
+      location: "Kochi, Kerala",
+      period: "Nov 2025 – Jun 2026",
       points: [
-        "Converted HTML designs into React components using JavaScript, ReactJS, and Bootstrap",
-        "Integrated APIs and managed state using React Hooks",
-        "Integrated backend APIs with React components and tested endpoints",
-        "Worked with Node.js-based API services for data handling",
-      ],
-    },
-    {
-      role: "Customer Support Executive",
-      company: "iMarque Solution Private Limited",
-      location: "",
-      period: "Aug 2023 – July 2024",
-      points: [
-        "Resolved customer queries efficiently",
-        "Assisted customers with product/service issues",
-        "Provided timely and effective solutions to customer concerns",
+        "Built real-world clinical AI workflow using LangGraph, FastAPI, and LLM",
+        "Developed async API endpoints and multi-step AI orchestration pipelines",
+        "Worked on prompt engineering and stateful memory across LangGraph nodes",
       ],
     },
   ];
 
   return (
-    <section id="experience" className="py-24 px-6 bg-section">
+    <section id="experience" className="py-28 px-6">
       <div className="max-w-4xl mx-auto">
-        <SectionHeading title="Experience" />
+        <SectionHeading eyebrow="My journey" title="Experience" />
         <div className="relative pl-8 sm:pl-12">
           <div className="absolute left-2 sm:left-4 top-2 bottom-2 w-px bg-gradient-to-b from-primary via-primary/30 to-transparent" />
           {jobs.map((j, i) => (
-            <Reveal key={j.role} className="relative mb-12 last:mb-0" delay={i * 0.1}>
-              <div className="absolute -left-[26px] sm:-left-[34px] top-2 size-4 rounded-full bg-primary ring-4 ring-section" />
-              <Card className="p-7 border-border/60 hover:shadow-lg hover:shadow-primary/5 transition-all">
+            <Reveal key={j.role} className="relative mb-10 last:mb-0" delay={i * 0.1}>
+              <div className="absolute -left-[26px] sm:-left-[34px] top-3 size-4 rounded-full bg-primary ring-4 ring-background shadow-[0_0_20px] shadow-primary/60" />
+              <Card className="glass rounded-2xl p-7">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
                   <div>
                     <h3 className="text-xl font-bold">{j.role}</h3>
-                    <p className="text-primary font-semibold mt-1 flex items-center gap-1.5">
+                    <p className="text-primary font-medium mt-1 flex items-center gap-1.5">
                       <Briefcase className="size-4" /> {j.company}
                     </p>
                   </div>
-                  <div className="text-sm text-muted-foreground space-y-1 sm:text-right">
+                  <div className="text-xs text-muted-foreground space-y-1 sm:text-right">
                     <div className="flex items-center gap-1.5 sm:justify-end">
                       <Calendar className="size-3.5" /> {j.period}
                     </div>
-                    {j.location && (
-                      <div className="flex items-center gap-1.5 sm:justify-end">
-                        <MapPin className="size-3.5" /> {j.location}
-                      </div>
-                    )}
+                    <div className="flex items-center gap-1.5 sm:justify-end">
+                      <MapPin className="size-3.5" /> {j.location}
+                    </div>
                   </div>
                 </div>
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 space-y-2.5">
                   {j.points.map((p) => (
                     <li
                       key={p}
-                      className="text-muted-foreground flex gap-2 leading-relaxed"
+                      className="text-sm text-muted-foreground flex gap-3 leading-relaxed"
                     >
-                      <span className="text-primary mt-1.5 size-1.5 rounded-full bg-primary shrink-0" />
+                      <span className="text-primary mt-2 size-1.5 rounded-full bg-primary shrink-0" />
                       <span>{p}</span>
                     </li>
                   ))}
@@ -402,58 +499,71 @@ function Experience() {
   );
 }
 
-function Projects() {
-  const projects = [
+function Skills() {
+  const groups = [
+    { icon: Server, title: "Backend", items: ["Python", "FastAPI", "Node.js", "REST API"] },
     {
-      title: "Student Record Management System",
-      stack: ["Node.js", "ReactJS", "MySQL"],
-      desc: "A CRUD-based backend system to manage student records, connected with a React frontend and MySQL for persistent storage. Includes basic validations and a clean UI.",
+      icon: Brain,
+      title: "AI / ML",
+      items: ["LangGraph", "LangChain", "OpenAI API", "RAG", "ChromaDB"],
     },
     {
-      title: "Simple College Website",
-      stack: ["HTML5", "CSS3", "Responsive Design"],
-      desc: "A multi-page static website displaying college-related information. Focused on responsive design principles and semantic HTML layout.",
+      icon: Database,
+      title: "Database",
+      items: ["PostgreSQL", "MongoDB", "MySQL", "SQLAlchemy"],
+    },
+    {
+      icon: Layout,
+      title: "Frontend",
+      items: ["React.js", "HTML5", "CSS3", "Bootstrap"],
+    },
+    {
+      icon: Wrench,
+      title: "Tools",
+      items: ["Docker", "Git", "GitHub", "Postman", "VS Code"],
+    },
+    {
+      icon: Code2,
+      title: "Languages",
+      items: ["Python", "JavaScript", "Java", "SQL"],
     },
   ];
   return (
-    <section id="projects" className="py-24 px-6">
+    <section id="skills" className="py-28 px-6 bg-section/40">
       <div className="max-w-6xl mx-auto">
-        <SectionHeading title="Projects" />
+        <SectionHeading eyebrow="My toolkit" title="Tech Stack" />
         <motion.div
           variants={stagger}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, amount: 0.15 }}
-          className="grid md:grid-cols-2 gap-6"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
         >
-          {projects.map((p) => (
-            <motion.div key={p.title} variants={fadeUp}>
-              <Card className="p-7 h-full flex flex-col border-border/60 hover:border-primary/40 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all">
-                <h3 className="text-xl font-bold mb-3">{p.title}</h3>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {p.stack.map((s) => (
-                    <Badge
-                      key={s}
-                      variant="secondary"
-                      className="bg-primary-soft text-primary hover:bg-primary-soft border-0 rounded-full"
-                    >
-                      {s}
-                    </Badge>
-                  ))}
-                </div>
-                <p className="text-muted-foreground leading-relaxed flex-1">{p.desc}</p>
-                <a href="#" className="mt-5">
-                  <Button
-                    variant="outline"
-                    className="rounded-full border-primary/30 text-primary hover:bg-primary-soft w-full sm:w-auto"
-                  >
-                    <Github className="size-4" /> View on GitHub
-                    <ExternalLink className="size-3.5" />
-                  </Button>
-                </a>
-              </Card>
-            </motion.div>
-          ))}
+          {groups.map((g) => {
+            const Icon = g.icon;
+            return (
+              <motion.div key={g.title} variants={fadeUp}>
+                <Card className="glass rounded-2xl p-6 h-full hover:-translate-y-0.5 transition-all">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="size-11 rounded-xl bg-primary-soft text-primary flex items-center justify-center border border-primary/30">
+                      <Icon className="size-5" />
+                    </div>
+                    <h3 className="font-display font-semibold text-lg">{g.title}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {g.items.map((it) => (
+                      <Badge
+                        key={it}
+                        className="bg-white/5 text-foreground/80 border border-white/10 hover:bg-primary-soft hover:text-primary hover:border-primary/30 rounded-md text-xs font-medium"
+                      >
+                        {it}
+                      </Badge>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
@@ -482,80 +592,56 @@ function Education() {
     },
   ];
   return (
-    <section id="education" className="py-24 px-6 bg-section">
-      <div className="max-w-4xl mx-auto">
-        <SectionHeading title="Education" />
-        <div className="space-y-5">
+    <section id="education" className="py-28 px-6">
+      <div className="max-w-5xl mx-auto">
+        <SectionHeading eyebrow="Academics" title="Education" />
+        <div className="space-y-4">
           {items.map((e, i) => (
             <Reveal key={e.title} delay={i * 0.08}>
-              <Card className="p-6 border-l-4 border-l-primary border-y border-r border-y-border/60 border-r-border/60 hover:shadow-lg hover:shadow-primary/5 transition-all">
+              <Card className="glass rounded-xl p-6 border-l-2 border-l-primary hover:-translate-y-0.5 transition-all">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex gap-4">
-                    <div className="size-11 rounded-lg bg-primary-soft text-primary flex items-center justify-center shrink-0">
+                    <div className="size-11 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0 border border-primary/30">
                       <GraduationCap className="size-5" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg leading-snug">{e.title}</h3>
-                      <p className="text-muted-foreground mt-1">{e.inst}</p>
+                      <h3 className="font-bold leading-snug">{e.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{e.inst}</p>
                     </div>
                   </div>
-                  <div className="sm:text-right pl-15">
-                    <div className="text-sm text-muted-foreground">{e.year}</div>
-                    <div className="font-semibold text-primary mt-1">{e.grade}</div>
+                  <div className="sm:text-right pl-15 sm:pl-0">
+                    <div className="text-xs text-muted-foreground">{e.year}</div>
+                    <div className="font-semibold text-primary text-sm mt-1">{e.grade}</div>
                   </div>
                 </div>
               </Card>
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
 
-function AchievementsCerts() {
-  return (
-    <section id="achievements" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading title="Achievements & Certifications" />
-        <div className="grid md:grid-cols-2 gap-6">
-          <Reveal>
-            <Card className="p-7 h-full border-border/60">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="size-11 rounded-lg bg-primary-soft text-primary flex items-center justify-center">
-                  <Trophy className="size-5" />
-                </div>
-                <h3 className="text-xl font-bold">Achievements</h3>
-              </div>
-              <ul className="space-y-4">
-                <li className="flex gap-3 text-muted-foreground leading-relaxed">
-                  <span className="text-primary mt-2 size-1.5 rounded-full bg-primary shrink-0" />
-                  Mentored college juniors during a group project, contributing to a 95% grade — recognized for teamwork and leadership.
-                </li>
-                <li className="flex gap-3 text-muted-foreground leading-relaxed">
-                  <span className="text-primary mt-2 size-1.5 rounded-full bg-primary shrink-0" />
-                  Organized and led a successful fundraising campaign with 10 team members for a local charity.
-                </li>
-              </ul>
-            </Card>
+        {/* Certifications */}
+        <div className="mt-16">
+          <Reveal className="mb-8 text-center">
+            <p className="text-xs font-semibold text-primary uppercase tracking-[0.25em] mb-3">
+              Credentials
+            </p>
+            <h3 className="font-display text-3xl font-bold tracking-tighter">
+              Certifications
+            </h3>
           </Reveal>
-          <Reveal delay={0.1}>
-            <Card className="p-7 h-full border-border/60">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="size-11 rounded-lg bg-primary-soft text-primary flex items-center justify-center">
-                  <Award className="size-5" />
+          <Reveal>
+            <Card className="glass rounded-2xl p-6 max-w-md mx-auto">
+              <div className="flex items-start gap-4">
+                <div className="size-12 rounded-xl bg-primary-soft text-primary flex items-center justify-center shrink-0 border border-primary/30">
+                  <Award className="size-6" />
                 </div>
-                <h3 className="text-xl font-bold">Certifications</h3>
-              </div>
-              <div className="rounded-xl border border-border/60 p-5">
-                <h4 className="font-bold">Full Stack Crash Course</h4>
-                <p className="text-primary text-sm font-semibold mt-1">Udemy</p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Completed: October 2024
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Covered: HTML, CSS, JavaScript, Bootstrap, MySQL basics
-                </p>
+                <div>
+                  <h4 className="font-bold">Full Stack Crash Course</h4>
+                  <p className="text-sm text-primary font-medium mt-0.5">Udemy</p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Completed: October 2024
+                  </p>
+                </div>
               </div>
             </Card>
           </Reveal>
@@ -566,43 +652,50 @@ function AchievementsCerts() {
 }
 
 function Contact() {
+  const items = [
+    { icon: Mail, label: EMAIL, href: `mailto:${EMAIL}` },
+    { icon: Phone, label: PHONE, href: `tel:${PHONE.replace(/\s/g, "")}` },
+    { icon: Github, label: "github.com/shamiahamed", href: GITHUB_URL },
+    { icon: Linkedin, label: "linkedin.com/in/shamim-ahamed-j", href: LINKEDIN_URL },
+  ];
   return (
-    <section id="contact" className="py-24 px-6 bg-section">
-      <div className="max-w-3xl mx-auto text-center">
-        <SectionHeading title="Get In Touch" />
+    <section id="contact" className="py-28 px-6 bg-section/40">
+      <div className="max-w-4xl mx-auto text-center">
+        <SectionHeading eyebrow="Let's connect" title="Get In Touch" />
         <Reveal>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            I'm currently open to new opportunities. Whether you have a question or just want
-            to say hi — my inbox is always open!
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+            Open to{" "}
+            <span className="text-foreground font-semibold">
+              Python Developer, FastAPI Backend, and AI Engineer
+            </span>{" "}
+            roles. Drop me a line — I'd love to hear about what you're building.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a href={`mailto:${EMAIL}`}>
-              <Button
-                size="lg"
-                className="rounded-full font-semibold shadow-lg shadow-primary/25"
-              >
-                <Mail className="size-4" /> Send Me an Email
-              </Button>
-            </a>
-            <a href={RESUME_URL} target="_blank" rel="noopener noreferrer">
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full font-semibold border-primary/30 text-primary hover:bg-primary-soft"
-              >
-                <Download className="size-4" /> Download Resume
-              </Button>
-            </a>
-          </div>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 mt-8 text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Github className="size-4" /> github.com/shamiahamed
-          </a>
         </Reveal>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-12 grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto"
+        >
+          {items.map(({ icon: Icon, label, href }) => (
+            <motion.a
+              key={label}
+              variants={fadeUp}
+              href={href}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="glass rounded-xl p-4 flex items-center gap-3 hover:-translate-y-0.5 transition-all text-left group"
+            >
+              <div className="size-11 rounded-lg bg-primary-soft text-primary flex items-center justify-center border border-primary/30 shrink-0">
+                <Icon className="size-5" />
+              </div>
+              <span className="text-sm text-foreground/90 group-hover:text-primary transition-colors truncate">
+                {label}
+              </span>
+            </motion.a>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
@@ -610,20 +703,31 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="bg-footer border-t border-border py-8 px-6">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+    <footer className="border-t border-border bg-footer/60 py-8 px-6">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          Designed & built by Shamim Ahamed J © 2025
+          Built by Shamim Ahamed J · 2026
         </p>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub"
-          className="text-muted-foreground hover:text-primary transition-colors"
-        >
-          <Github className="size-5" />
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
+            className="size-9 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Github className="size-4" />
+          </a>
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="size-9 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Linkedin className="size-4" />
+          </a>
+        </div>
       </div>
     </footer>
   );
@@ -633,14 +737,13 @@ function Portfolio() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main className="pt-16">
+      <main>
         <Hero />
         <About />
-        <Skills />
-        <Experience />
         <Projects />
+        <Experience />
+        <Skills />
         <Education />
-        <AchievementsCerts />
         <Contact />
       </main>
       <Footer />
