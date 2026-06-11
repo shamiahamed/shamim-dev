@@ -355,18 +355,21 @@ function Projects() {
       subtitle: "Clinic Management System",
       stack: ["FastAPI", "Async SQLAlchemy", "PostgreSQL", "JWT", "RBAC", "Pydantic"],
       desc: "A production-ready REST API for managing clinics, doctors, patients, and appointments. Features JWT auth, Role-Based Access Control, and a clean layered architecture built for real healthcare workflows.",
+      demoUrl: null,
     },
     {
       title: "DocMind",
       subtitle: "LLM Document Intelligence Agent",
       stack: ["LangGraph", "LangChain", "OpenAI GPT-4o", "ChromaDB", "FastAPI", "RAG"],
       desc: "A multi-agent AI workflow using LangGraph that ingests documents, performs semantic retrieval via RAG, and generates context-aware answers. Built with stateful memory and a streaming FastAPI endpoint.",
+      demoUrl: "http://13.222.21.162:3000/",
     },
     {
       title: "EduTrack",
       subtitle: "Student Record Management",
       stack: ["React.js", "MySQL", "Python", "REST API", "CRUD"],
       desc: "A full-stack CRUD system for managing student records with a React frontend connected to a RESTful backend, with statistical summaries and performance insights.",
+      demoUrl: null,
     },
   ];
 
@@ -419,14 +422,16 @@ function Projects() {
                       <Github className="size-4" /> GitHub
                     </Button>
                   </a>
-                  <a href="#" className="flex-1">
-                    <Button
-                      size="sm"
-                      className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                    >
-                      Live Demo <ExternalLink className="size-3.5" />
-                    </Button>
-                  </a>
+                  {p.demoUrl && (
+                    <a href={p.demoUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                      <Button
+                        size="sm"
+                        className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      >
+                        Live Demo <ExternalLink className="size-3.5" />
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </Card>
             </motion.div>
