@@ -1,0 +1,7 @@
+# Shamim Ahamed J
+
+> Personal portfolio of Shamim Ahamed J — Python Developer and AI Engineer building intelligent backend systems with FastAPI, LangGraph, and LLMs.
+
+## Pages
+
+- [Home](/): About, projects, experience, skills, education, and contact.

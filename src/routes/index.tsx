@@ -27,6 +27,25 @@ import { Card } from "@/components/ui/card";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
+  head: () => ({
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: "Shamim Ahamed J",
+          jobTitle: "Python Developer & AI Engineer",
+          email: "mailto:ahamedshamin5@gmail.com",
+          telephone: "+91 98945 93190",
+          sameAs: [
+            "https://github.com/shamiahamed",
+            "https://linkedin.com/in/shamim-ahamed-j-4766b91b5",
+          ],
+        }),
+      },
+    ],
+  }),
 });
 
 const RESUME_URL = "https://drive.google.com/file/d/1sfpRvGbHBsz1uOJVOjeklbEGL63z2Zac/view?usp=sharing";
@@ -237,6 +256,7 @@ function Hero() {
           className="mt-7 font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.02] text-gradient"
         >
           SHAMIM AHAMED J
+          <span className="sr-only"> — Python Developer & AI Engineer</span>
         </motion.h1>
 
         <motion.h2
