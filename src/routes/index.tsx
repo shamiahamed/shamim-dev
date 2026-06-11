@@ -29,7 +29,7 @@ export const Route = createFileRoute("/")({
   component: Portfolio,
 });
 
-const RESUME_URL = "#";
+const RESUME_URL = "https://drive.google.com/file/d/1sfpRvGbHBsz1uOJVOjeklbEGL63z2Zac/view?usp=sharing";
 const GITHUB_URL = "https://github.com/shamiahamed";
 const LINKEDIN_URL = "https://linkedin.com/in/shamim-ahamed-j-4766b91b5";
 const EMAIL = "ahamedshamin5@gmail.com";
