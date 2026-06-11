@@ -256,6 +256,7 @@ function Hero() {
           className="mt-7 font-display text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter leading-[1.02] text-gradient"
         >
           SHAMIM AHAMED J
+          <span className="sr-only"> — Python Developer & AI Engineer</span>
         </motion.h1>
 
         <motion.h2
