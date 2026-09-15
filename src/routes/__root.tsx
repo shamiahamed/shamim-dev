@@ -76,18 +76,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Portfolio of Shamim Ahamed J — Python Developer and AI Engineer building intelligent backend systems with FastAPI, LangGraph, and LLMs." },
       { name: "author", content: "Shamim Ahamed J" },
       { property: "og:title", content: "Shamim Ahamed J | Python Developer & AI Engineer" },
-      { property: "og:description", content: "Portfolio of Shamim Ahamed J — Python Developer and AI Engineer building intelligent backend systems with FastAPI, LangGraph, and LLMs." },
+      { property: "og:description", content: "Building intelligent backend systems with Python, FastAPI, and LangGraph." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Shamim Ahamed J | Python Developer & AI Engineer" },
-      { name: "twitter:description", content: "Portfolio of Shamim Ahamed J — Python Developer and AI Engineer building intelligent backend systems with FastAPI, LangGraph, and LLMs." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8f20dc6c-6366-4207-be1b-f066bec683df/id-preview-d7c99ba8--043541e0-b6a2-4c9f-a8e5-aea1e316f7a8.lovable.app-1781154130923.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8f20dc6c-6366-4207-be1b-f066bec683df/id-preview-d7c99ba8--043541e0-b6a2-4c9f-a8e5-aea1e316f7a8.lovable.app-1781154130923.png" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" },
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Shamim Ahamed J — Portfolio",
+          url: "https://shamim-dev.lovable.app",
+        }),
       },
     ],
   }),
