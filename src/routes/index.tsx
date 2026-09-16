@@ -6,6 +6,8 @@ import {
   Award,
   Brain,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Code2,
   Database,
   Download,
@@ -23,6 +25,7 @@ import {
   Wrench,
   X,
 } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -473,7 +476,7 @@ const PROJECTS: Project[] = [
     tagline: "Multi-agent document intelligence with RAG",
     tags: ["LangGraph", "LangChain", "FastAPI", "ChromaDB", "React", "Python"],
     repoUrl: "https://github.com/shamiahamed/docmind-ai",
-    demoUrl: "http://13.222.21.162:3000/",
+    demoUrl: null,
     objective:
       "Semantic search and question answering over uploaded documents using retrieval-augmented generation.",
     details: [
@@ -488,7 +491,7 @@ const PROJECTS: Project[] = [
     tagline: "AI complaint intake for pharmaceutical manufacturing",
     tags: ["LangGraph", "Groq", "FastAPI", "React", "Redux Toolkit", "SQLAlchemy"],
     repoUrl: "https://github.com/shamiahamed/aivoa-complaint-system",
-    demoUrl: null,
+    demoUrl: "https://email-automation-5xom.onrender.com/",
     objective:
       "Turn a raw customer complaint email or document into a structured, risk-assessed complaint record ready for review.",
     details: [
@@ -533,7 +536,7 @@ const PROJECTS: Project[] = [
     tagline: "Capture job posts, extract contacts, apply by email",
     tags: ["Python", "FastAPI", "Groq", "OCR", "Postgres", "Chrome Extension"],
     repoUrl: "https://github.com/shamiahamed/Linkedin_Job_Automation",
-    demoUrl: null,
+    demoUrl: "https://linkedin-job-automation-abhh.onrender.com/static/dashboard/index.html",
     objective:
       "Automate the repetitive part of a job hunt: capture a LinkedIn post, find the contact, send a tailored application.",
     details: [
@@ -548,7 +551,7 @@ const PROJECTS: Project[] = [
     tagline: "Full-stack ticketing for employees and support engineers",
     tags: ["React", "Express", "SQLite", "JWT", "bcrypt"],
     repoUrl: "https://github.com/shamiahamed/IT-Support-Desk",
-    demoUrl: null,
+    demoUrl: "https://shamiahamed.github.io/IT-Support-Desk/#/login",
     objective:
       "Let employees raise IT support tickets while engineers assign, track and resolve them.",
     details: [
@@ -597,8 +600,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [open, setOpen] = useState(false);
   const panelId = `project-details-${index}`;
   return (
-    <Reveal delay={(index % 2) * 0.08}>
-      <Card className="glass rounded-3xl p-7 h-full flex flex-col transition-all hover:-translate-y-1">
+    <Reveal delay={(index % 3) * 0.08} className="h-full">
+      <Card className="glass group relative overflow-hidden rounded-3xl p-7 h-full min-h-[31rem] flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-butter to-mint" />
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-display text-xl font-bold">{project.name}</h3>
           <span className="size-10 shrink-0 rounded-xl bg-primary-soft text-primary flex items-center justify-center border border-primary/20">
@@ -666,14 +670,88 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 function Projects() {
+  const reduce = useReducedMotion();
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: true,
+    slidesToScroll: 1,
+  });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const demoProjects = PROJECTS.filter((project) => project.demoUrl);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const updateSelected = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    updateSelected();
+    emblaApi.on("select", updateSelected);
+    emblaApi.on("reInit", updateSelected);
+    return () => {
+      emblaApi.off("select", updateSelected);
+      emblaApi.off("reInit", updateSelected);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi || reduce) return;
+    const interval = window.setInterval(() => emblaApi.scrollNext(), 3800);
+    return () => window.clearInterval(interval);
+  }, [emblaApi, reduce]);
+
   return (
     <section id="projects" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <SectionHeading eyebrow="Selected work" title="Projects" />
-        <div className="grid md:grid-cols-2 gap-6">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.name} project={p} index={i} />
-          ))}
+
+        <div className="relative">
+          <div ref={emblaRef} className="overflow-hidden py-3 -my-3">
+            <div className="flex -ml-5">
+              {demoProjects.map((project, index) => (
+                <div
+                  key={project.name}
+                  className="min-w-0 flex-[0_0_100%] pl-5 md:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
+                >
+                  <ProjectCard project={project} index={index} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-7 flex items-center justify-center gap-4">
+            <Button
+              type="button"
+              size="icon"
+              variant="outline"
+              className="rounded-full"
+              aria-label="Previous project"
+              onClick={() => emblaApi?.scrollPrev()}
+            >
+              <ChevronLeft className="size-4" />
+            </Button>
+            <div className="flex items-center gap-2" aria-label="Choose project slide">
+              {demoProjects.map((project, index) => (
+                <button
+                  key={project.name}
+                  type="button"
+                  aria-label={`Show ${project.name}`}
+                  aria-current={selectedIndex === index ? "true" : undefined}
+                  onClick={() => emblaApi?.scrollTo(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    selectedIndex === index ? "w-7 bg-primary" : "w-2 bg-border hover:bg-primary/50"
+                  }`}
+                />
+              ))}
+            </div>
+            <Button
+              type="button"
+              size="icon"
+              variant="outline"
+              className="rounded-full"
+              aria-label="Next project"
+              onClick={() => emblaApi?.scrollNext()}
+            >
+              <ChevronRight className="size-4" />
+            </Button>
+          </div>
         </div>
 
         <Reveal className="mt-14">
